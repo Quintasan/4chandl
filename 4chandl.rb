@@ -43,7 +43,16 @@ else
     thread_url = ARGV[0]
 end
 loop do
-  body = open(thread_url + ".json").read
+  begin
+    body = open(thread_url + ".json").read
+  rescue OpenURI::HTTPError => e
+    if e.message == '404 Not Found'
+      puts "Thread 404'd. Exiting."
+      exit(1)
+    else
+      raise e
+    end
+  end
   posts = JSON.load(body)['posts']
   posts = posts.select { |p| p.include? 'ext' }
   threadno = posts.first['no']
