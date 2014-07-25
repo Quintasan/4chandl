@@ -1,5 +1,6 @@
 require 'optparse'
 require 'open-uri'
+require 'fileutils'
 require 'json'
 
 def api_request uri
